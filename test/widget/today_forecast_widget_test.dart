@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:weather_mobile_app/app.dart';
 import 'package:weather_mobile_app/data/repositories/weather_repository_impl.dart';
@@ -7,7 +6,9 @@ void main() {
   testWidgets('Aether Weather App smoke test & shell load', (WidgetTester tester) async {
     final repo = WeatherRepositoryImpl();
     await tester.pumpWidget(AetherWeatherApp(weatherRepository: repo));
-    await tester.pumpAndSettle();
+    // Pump frames to allow initial state to render without hanging on infinite animations
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
 
     // Verify Brand title is visible
     expect(find.text('Aether'), findsOneWidget);
